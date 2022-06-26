@@ -1,6 +1,9 @@
 package logger
 
 import (
+	"fmt"
+	"time"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -8,10 +11,11 @@ import (
 var log *zap.Logger
 
 func init() {
+	yyMMdd := time.Now().Local().Format("060101")
 	var err error
 	config := zap.NewProductionConfig()
-	config.OutputPaths = append(config.OutputPaths, "logs/out.log")
-	config.ErrorOutputPaths = append(config.ErrorOutputPaths, "logs/error.log")
+	config.OutputPaths = append(config.OutputPaths, fmt.Sprintf("logs/out-%s.log", yyMMdd))
+	config.ErrorOutputPaths = append(config.ErrorOutputPaths, fmt.Sprintf("logs/error-%s.log", yyMMdd))
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.TimeKey = "timestamp"
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
