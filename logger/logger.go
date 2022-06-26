@@ -10,6 +10,8 @@ var log *zap.Logger
 func init() {
 	var err error
 	config := zap.NewProductionConfig()
+	config.OutputPaths = append(config.OutputPaths, "logs/out.log")
+	config.ErrorOutputPaths = append(config.ErrorOutputPaths, "logs/error.log")
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.TimeKey = "timestamp"
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
@@ -20,16 +22,6 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	// logger, _ := zap.NewProduction()
-	// defer logger.Sync() // flushes buffer, if any
-	// sugar := logger.Sugar()
-	// sugar.Infow("failed to fetch URL",
-	// 	// Structured context as loosely typed key-value pairs.
-	// 	"url", configuration.RuntimeConf.Datasource.Url,
-	// 	"attempt", 3,
-	// 	"backoff", time.Second,
-	// )
-	// sugar.Infof("Failed to fetch URL: %s", configuration.RuntimeConf.Datasource.Url)
 }
 
 func Info(message string, fields ...zap.Field) {
