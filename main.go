@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
-	"time"
 
 	"github.com/deuxksy/jasmine/configuration"
+	"github.com/deuxksy/jasmine/logger"
 	"github.com/fsnotify/fsnotify"
 	"github.com/gocolly/colly/v2"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 )
 
 // main 패키지에 init() 메서드를 만들어놓으면
@@ -79,14 +79,8 @@ func main() {
 	// 어디서든 가져다 쓸 수 있습니다.
 	fmt.Println("db type: ", configuration.RuntimeConf.Datasource.DbType)
 
-	logger, _ := zap.NewProduction()
-	defer logger.Sync() // flushes buffer, if any
-	sugar := logger.Sugar()
-	sugar.Infow("failed to fetch URL",
-		// Structured context as loosely typed key-value pairs.
-		"url", configuration.RuntimeConf.Datasource.Url,
-		"attempt", 3,
-		"backoff", time.Second,
-	)
-	sugar.Infof("Failed to fetch URL: %s", configuration.RuntimeConf.Datasource.Url)
+	log.Println("Test")
+	logger.Debug("Debug")
+	logger.Info("Info")
+	logger.Error("Error")
 }
