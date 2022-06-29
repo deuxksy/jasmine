@@ -1,19 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"os"
 
-	"github.com/deuxksy/jasmine/configuration"
-	"github.com/deuxksy/jasmine/logger"
+	"github.com/deuxksy/template-go-application/configuration"
+	"github.com/deuxksy/template-go-application/logger"
 	"github.com/fsnotify/fsnotify"
-	"github.com/gocolly/colly/v2"
 	"github.com/spf13/viper"
 )
 
-// main 패키지에 init() 메서드를 만들어놓으면
-// main문이 실행되기전에 먼저 실행됩니다.
+
 func init() {
 	profile := initProfile()
 	setRuntimeConfig(profile)
@@ -34,16 +30,16 @@ func setRuntimeConfig(profile string) {
 	}
 
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("Config file changed:", e.Name)
+		logger.Warn("Config file changed: %s", e.Name)
 		var err error
 		err = viper.ReadInConfig()
 		if err != nil {
-			fmt.Println(err)
+			logger.Error(err.Error())
 			return
 		}
 		err = viper.Unmarshal(&configuration.RuntimeConf)
 		if err != nil {
-			fmt.Println(err)
+			logger.Error(err.Error())
 			return
 		}
 	})
@@ -56,31 +52,12 @@ func initProfile() string {
 	if len(profile) <= 0 {
 		profile = "local"
 	}
-	fmt.Println("GO_PROFILE: " + profile)
+	logger.Debug(profile)
 	return profile
 }
 
-func collyTest() {
-	c := colly.NewCollector()
-
-	// Find and visit all links
-	c.OnHTML("a", func(e *colly.HTMLElement) {
-		e.Request.Visit(e.Attr("href"))
-	})
-
-	c.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL)
-	})
-
-	c.Visit("http://go-colly.org/")
-}
-
-func main() {
-	// 어디서든 가져다 쓸 수 있습니다.
-	fmt.Println("db type: ", configuration.RuntimeConf.Datasource.DbType)
-
-	log.Println("Test")
-	logger.Debug("Debug")
-	logger.Info("Info")
-	logger.Error("Error")
+func main () {
+	logger.Info("%d", configuration.RuntimeConf.Server.Port)
+	logger.Info(configuration.RuntimeConf.Datasource.Url)
+	logger.Error(configuration.RuntimeConf.Datasource.DbType)
 }
