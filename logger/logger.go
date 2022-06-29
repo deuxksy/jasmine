@@ -14,6 +14,10 @@ func init() {
 	yyMMdd := time.Now().Local().Format("060101")
 	var err error
 	config := zap.NewProductionConfig()
+	config.Level, err = zap.ParseAtomicLevel("debug")
+	if err != nil {
+		panic(err)
+	}
 	config.OutputPaths = append(config.OutputPaths, fmt.Sprintf("logs/out-%s.log", yyMMdd))
 	config.ErrorOutputPaths = append(config.ErrorOutputPaths, fmt.Sprintf("logs/error-%s.log", yyMMdd))
 	encoderConfig := zap.NewProductionEncoderConfig()
@@ -28,14 +32,18 @@ func init() {
 	}
 }
 
-func Info(message string, fields ...zap.Field) {
-	log.Info(message, fields...)
+func Debug(template string, args ...interface{}) {
+	log.Sugar().Debugf(template, args...)
 }
 
-func Debug(message string, fields ...zap.Field) {
-	log.Debug(message, fields...)
+func Info(template string, args ...interface{}) {
+	log.Sugar().Infof(template, args...)
 }
 
-func Error(message string, fields ...zap.Field) {
-	log.Error(message, fields...)
+func Warn(template string, args ...interface{}) {
+	log.Sugar().Warnf(template, args...)
+}
+
+func Error(template string, args ...interface{}) {
+	log.Sugar().Errorf(template, args...)
 }
