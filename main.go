@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/deuxksy/template-go-application/configuration"
 	"github.com/deuxksy/template-go-application/logger"
 	"github.com/fsnotify/fsnotify"
+	"github.com/samber/lo"
 	"github.com/spf13/viper"
 )
 
@@ -57,6 +59,8 @@ func initProfile() string {
 }
 
 func main () {
+	names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
+	fmt.Println(names)
 	logger.Info("%d", configuration.RuntimeConf.Server.Port)
 	logger.Info(configuration.RuntimeConf.Datasource.Url)
 	logger.Error(configuration.RuntimeConf.Datasource.DbType)
