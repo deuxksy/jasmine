@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"go.uber.org/zap"
@@ -14,20 +15,20 @@ func init() {
 	yyMMdd := time.Now().Local().Format("060101")
 	var err error
 	config := zap.NewProductionConfig()
-	config.Level, err = zap.ParseAtomicLevel("debug")
-	if err != nil {
+	if config.Level, err = zap.ParseAtomicLevel("debug"); err != nil {
 		panic(err)
 	}
-	config.OutputPaths = append(config.OutputPaths, fmt.Sprintf("logs/out-%s.log", yyMMdd))
-	config.ErrorOutputPaths = append(config.ErrorOutputPaths, fmt.Sprintf("logs/error-%s.log", yyMMdd))
+	if err := os.MkdirAll(fmt.Sprintf("logs/%s", yyMMdd), os.ModePerm); err != nil {
+		panic(err)
+	}
+	config.OutputPaths = append(config.OutputPaths, fmt.Sprintf("logs/%s/out.log", yyMMdd))
+	config.ErrorOutputPaths = append(config.ErrorOutputPaths, fmt.Sprintf("logs/%s/error.log", yyMMdd))
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.TimeKey = "timestamp"
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	encoderConfig.StacktraceKey = ""
 	config.EncoderConfig = encoderConfig
-
-	log, err = config.Build(zap.AddCallerSkip(1))
-	if err != nil {
+	if log, err = config.Build(zap.AddCallerSkip(1)); err != nil {
 		panic(err)
 	}
 }
