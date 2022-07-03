@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/deuxksy/template-go-application/internal/configuration"
@@ -59,8 +58,8 @@ func initProfile() string {
 }
 
 func main () {
-	names := lo.Uniq[string]([]string{"Samuel", "Marc", "Samuel"})
-	fmt.Println(names)
+	names := lo.Uniq([]string{"Samuel", "Marc", "Samuel"})
+	logger.Info("%s, %d", names, len(names))
 	logger.Info("%d", configuration.RuntimeConf.Server.Port)
 	logger.Info(configuration.RuntimeConf.Datasource.Url)
 	logger.Error(configuration.RuntimeConf.Datasource.DbType)
