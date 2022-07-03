@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/deuxksy/template-go-application/configuration"
-	"github.com/deuxksy/template-go-application/logger"
+	"github.com/deuxksy/template-go-application/internal/configuration"
+	"github.com/deuxksy/template-go-application/internal/logger"
 	"github.com/fsnotify/fsnotify"
 	"github.com/samber/lo"
 	"github.com/spf13/viper"
