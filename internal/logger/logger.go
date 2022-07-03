@@ -48,3 +48,11 @@ func Warn(template string, args ...interface{}) {
 func Error(template string, args ...interface{}) {
 	log.Sugar().Errorf(template, args...)
 }
+
+// func DPanic(template string, args ...interface{}) {
+// 	log.Sugar().DPanicf(template, args...)
+// }
+
+func Panic(template string, args ...interface{}) {
+	log.Sugar().Panicf(template, args...)
+}
