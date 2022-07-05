@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-
 func init() {
 	profile := initProfile()
 	setRuntimeConfig(profile)
@@ -57,7 +56,7 @@ func initProfile() string {
 	return profile
 }
 
-func main () {
+func main() {
 	names := lo.Uniq([]string{"Samuel", "Marc", "Samuel"})
 	logger.Info("%s, %d", names, len(names))
 	logger.Info("%d", configuration.RuntimeConf.Server.Port)
