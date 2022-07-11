@@ -36,3 +36,23 @@
 
 - zap
 - viper
+
+## build
+
+### windows
+
+```bash
+# GOOS=windows GOARCH=amd64 go build main.go
+```
+
+### linux
+
+```bash
+# GOOS=linux GOARCH=386 go build main.go
+```
+
+### mac
+
+```bash
+# GOOS=darwin GOARCH=arm64 go build main.go
+```
